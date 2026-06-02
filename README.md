@@ -18,14 +18,15 @@ Create a `.env.local` file with at least these values:
 - `MISSION_CONTROL_EMAIL`
 - `MISSION_CONTROL_PASSWORD`
 - `NEXTAUTH_SECRET` (required for production)
+- `RESEND_API_KEY` (for email notifications; get from [resend.com](https://resend.com))
 
 Create the required Supabase tables using `supabase/schema.sql`:
 
-- `visitors`
-- `contact_messages`
-- `assistant_interactions`
+- `visitors` (with country, city, ip_hash tracking)
+- `contact_messages` (with subject and is_read status)
+- `assistant_interactions` (with question tracking)
 
-If you are using the Supabase CLI, you can run:
+If using the Supabase CLI:
 
 ```bash
 supabase db query supabase/schema.sql
@@ -33,4 +34,12 @@ supabase db query supabase/schema.sql
 
 Otherwise, paste the SQL from `supabase/schema.sql` into the Supabase SQL editor.
 
-Add a real portrait at `public/darshil-photo.jpg`; the hero has a fallback frame until that file exists.
+Add your profile portrait at `public/darshil-photo.jpg`; the hero has a fallback frame until that file exists.
+
+## Features
+
+- **Real-time Dashboard**: Live visitor, message, and interaction counts from Supabase
+- **Email Notifications**: Instant email alerts when contact forms are submitted (via Resend)
+- **Activity Feed**: Recent visitors, messages, and AI interactions
+- **Geographic Insights**: Top countries and cities by visitor count
+- **Message Management**: Track read/unread status for contact submissions

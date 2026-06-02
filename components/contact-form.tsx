@@ -45,6 +45,10 @@ export function ContactForm() {
         <input name="email" type="email" required autoComplete="email" />
       </label>
       <label>
+        <span>Subject</span>
+        <input name="subject" type="text" placeholder="What is this about?" />
+      </label>
+      <label>
         <span>Message</span>
         <textarea name="message" required rows={5} />
       </label>
