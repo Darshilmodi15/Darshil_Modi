@@ -226,9 +226,7 @@ export const assistantQuestions = [
   }
 ];
 
-export const dashboardMetrics = {
-  visitors: "1,248",
-  countries: ["India", "United States", "Germany", "Canada", "United Kingdom"],
+export const dashboardStaticData = {
   traffic: [
     { label: "Mon", value: 62 },
     { label: "Tue", value: 48 },
@@ -244,12 +242,6 @@ export const dashboardMetrics = {
     { label: "EduMentor", value: 18 },
     { label: "Linguamate", value: 10 },
     { label: "Cyborg Nexus", value: 5 }
-  ],
-  aiInteractions: [
-    "Tell me about TalentAI-X.",
-    "Who is Darshil?",
-    "What are you currently learning?",
-    "Show certifications."
   ],
   blogAnalytics: [
     { label: "Draft logs", value: "4" },

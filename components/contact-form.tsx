@@ -6,10 +6,12 @@ type FormState = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState("sending");
+    setErrorMessage(null);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -27,6 +29,8 @@ export function ContactForm() {
       return;
     }
 
+    const body = response ? await response.json().catch(() => null) : null;
+    setErrorMessage(body?.error || "Message could not be sent.");
     setState("error");
   }
 
@@ -49,7 +53,7 @@ export function ContactForm() {
       </button>
       <p className="form-status" role="status">
         {state === "sent" && "Message logged."}
-        {state === "error" && "Message could not be sent."}
+        {state === "error" && errorMessage}
       </p>
     </form>
   );

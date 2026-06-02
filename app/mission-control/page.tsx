@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { AdminDashboard } from "@/components/admin-dashboard";
 import { authOptions } from "@/lib/auth";
+import { getDashboardMetrics } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -12,5 +13,7 @@ export default async function MissionControlPage() {
     redirect("/mission-control/login");
   }
 
-  return <AdminDashboard />;
+  const metrics = await getDashboardMetrics();
+
+  return <AdminDashboard metrics={metrics} />;
 }

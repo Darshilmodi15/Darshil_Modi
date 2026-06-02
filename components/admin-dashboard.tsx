@@ -1,4 +1,5 @@
-import { dashboardMetrics, missions } from "@/lib/portfolio-data";
+import { dashboardStaticData, missions } from "@/lib/portfolio-data";
+import type { DashboardMetrics } from "@/lib/supabase";
 
 function MetricTile({
   label,
@@ -18,7 +19,7 @@ function MetricTile({
   );
 }
 
-export function AdminDashboard() {
+export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
   return (
     <main className="dashboard-shell">
       <section className="dashboard-hero">
@@ -34,23 +35,23 @@ export function AdminDashboard() {
       <section className="metrics-grid" aria-label="Dashboard metrics">
         <MetricTile
           label="Visitors"
-          value={dashboardMetrics.visitors}
-          detail="Portfolio sessions tracked through the analytics layer."
+          value={metrics.visitors.toString()}
+          detail="Live visitor count from Supabase."
         />
         <MetricTile
           label="Countries"
-          value={dashboardMetrics.countries.length.toString()}
-          detail={dashboardMetrics.countries.join(", ")}
+          value={metrics.countries.length.toString()}
+          detail={metrics.countries.length ? metrics.countries.join(", ") : "No country data available."}
         />
         <MetricTile
           label="Contact Messages"
-          value="0"
-          detail="Supabase contact inbox is ready for live entries."
+          value={metrics.contactMessages.toString()}
+          detail="Live contact form submissions stored in Supabase."
         />
         <MetricTile
           label="AI Interactions"
-          value={dashboardMetrics.aiInteractions.length.toString()}
-          detail="Mission Control question events."
+          value={metrics.aiInteractions.toString()}
+          detail="Recent Mission Control question events."
         />
       </section>
 
@@ -58,7 +59,7 @@ export function AdminDashboard() {
         <article className="dashboard-panel">
           <h2>Traffic</h2>
           <div className="traffic-chart">
-            {dashboardMetrics.traffic.map((item) => (
+            {dashboardStaticData.traffic.map((item) => (
               <div key={item.label} className="traffic-bar">
                 <span style={{ height: `${item.value}%` }} />
                 <small>{item.label}</small>
@@ -70,7 +71,7 @@ export function AdminDashboard() {
         <article className="dashboard-panel">
           <h2>Popular Missions</h2>
           <div className="ranking-list">
-            {dashboardMetrics.popularProjects.map((item) => (
+            {dashboardStaticData.popularProjects.map((item) => (
               <div key={item.label} className="ranking-row">
                 <span>{item.label}</span>
                 <div>
@@ -86,16 +87,18 @@ export function AdminDashboard() {
         <article className="dashboard-panel">
           <h2>Assistant Interactions</h2>
           <ul className="event-list">
-            {dashboardMetrics.aiInteractions.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
+            {metrics.recentInteractions.length > 0 ? (
+              metrics.recentInteractions.map((item) => <li key={item}>{item}</li>)
+            ) : (
+              <li>No recent AI interactions recorded.</li>
+            )}
           </ul>
         </article>
 
         <article className="dashboard-panel">
           <h2>Research Log Analytics</h2>
           <ul className="analytics-list">
-            {dashboardMetrics.blogAnalytics.map((item) => (
+            {dashboardStaticData.blogAnalytics.map((item) => (
               <li key={item.label}>
                 <span>{item.label}</span>
                 <strong>{item.value}</strong>

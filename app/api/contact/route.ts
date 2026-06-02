@@ -10,17 +10,22 @@ export async function POST(request: Request) {
 
   const supabase = getSupabaseAdminClient();
 
-  if (supabase) {
-    const { error } = await supabase.from("contact_messages").insert({
-      name: body.name,
-      email: body.email,
-      message: body.message,
-      created_at: new Date().toISOString()
-    });
+  if (!supabase) {
+    return NextResponse.json(
+      { ok: false, error: "Supabase is not configured." },
+      { status: 500 }
+    );
+  }
 
-    if (error) {
-      return NextResponse.json({ ok: false }, { status: 500 });
-    }
+  const { error } = await supabase.from("contact_messages").insert({
+    name: body.name,
+    email: body.email,
+    message: body.message,
+    created_at: new Date().toISOString()
+  });
+
+  if (error) {
+    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });
