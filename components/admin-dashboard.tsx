@@ -1,4 +1,5 @@
 import type { DashboardMetrics, ActivityEvent } from "@/lib/supabase";
+import RecentMessages from "@/components/recent-messages";
 
 function MetricTile({
   label,
@@ -123,6 +124,12 @@ export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
           </article>
         </section>
       )}
+
+      {/* Recent Messages (interactive) */}
+      <section className="dashboard-panel">
+        <h2>Recent Messages</h2>
+        <RecentMessages initialMessages={metrics.recentMessages} />
+      </section>
 
       {/* Geography */}
       <section className="dashboard-columns">

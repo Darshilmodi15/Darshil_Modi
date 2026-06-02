@@ -24,6 +24,7 @@ export type DashboardMetrics = {
   };
   totalInteractions: number;
   recentInteractions: { question: string; timestamp: string }[];
+  recentMessages: { id: string; name: string; email: string; subject?: string; message: string; is_read: boolean; createdAt: string }[];
   topCountries: { country: string; count: number }[];
   topCities: { city: string; count: number }[];
   recentActivity: ActivityEvent[];
@@ -81,6 +82,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
       unreadMessages: 0,
       totalInteractions: 0,
       recentInteractions: [],
+      recentMessages: [],
       topCountries: [],
       topCities: [],
       recentActivity: []
@@ -120,6 +122,23 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
   const recentInteractions = (recentQuestionsRes.data ?? []).map((item: any) => ({
     question: item.question,
     timestamp: item.created_at
+  }));
+
+  // Fetch recent messages (with read state)
+  const recentMessagesRes = await supabase
+    .from("contact_messages")
+    .select("id, name, email, subject, message, is_read, created_at")
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  const recentMessages = (recentMessagesRes.error ? [] : (recentMessagesRes.data ?? [])).map((m: any) => ({
+    id: m.id,
+    name: m.name,
+    email: m.email,
+    subject: m.subject,
+    message: m.message,
+    is_read: !!m.is_read,
+    createdAt: m.created_at
   }));
 
   // Compute top countries from visitor data
@@ -182,6 +201,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
     latestMessage,
     totalInteractions,
     recentInteractions,
+    recentMessages,
     topCountries,
     topCities,
     recentActivity

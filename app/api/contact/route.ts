@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdminClient } from "@/lib/supabase";
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+
 async function sendEmailNotification(name: string, email: string, subject: string, message: string) {
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.RESEND_API_KEY || !ADMIN_EMAIL) {
+    console.error("RESEND_API_KEY or ADMIN_EMAIL not configured; skipping email notification.");
     return;
   }
 
@@ -10,12 +13,14 @@ async function sendEmailNotification(name: string, email: string, subject: strin
     const { Resend } = await import("resend");
     const resend = new Resend(process.env.RESEND_API_KEY);
     
-    await resend.emails.send({
-      from: "noreply@mission-log.dev",
-      to: "darshilmodi99@gmail.com",
+    const result = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: ADMIN_EMAIL,
       subject: `New Contact: ${subject || "(No Subject)"}`,
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"><h2>New Contact Submission</h2><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Subject:</strong> ${subject || "(No Subject)"}</p><hr /><p><strong>Message:</strong></p><p style="white-space: pre-wrap;">${message}</p></div>`
     });
+
+    console.log("Resend result:", JSON.stringify(result));
   } catch (error) {
     console.error("Email notification failed:", error);
   }
@@ -56,8 +61,8 @@ export async function POST(request: Request) {
     );
   }
 
-  // Send email notification (non-blocking)
-  sendEmailNotification(name, email, subject, message);
+  // Send email notification and log result for visibility
+  await sendEmailNotification(name, email, subject, message);
 
   return NextResponse.json({ ok: true });
 }

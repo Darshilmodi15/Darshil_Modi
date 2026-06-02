@@ -19,6 +19,7 @@ Create a `.env.local` file with at least these values:
 - `MISSION_CONTROL_PASSWORD`
 - `NEXTAUTH_SECRET` (required for production)
 - `RESEND_API_KEY` (for email notifications; get from [resend.com](https://resend.com))
+- `ADMIN_EMAIL` (address that receives contact notifications, e.g. your email)
 
 Create the required Supabase tables using `supabase/schema.sql`:
 
