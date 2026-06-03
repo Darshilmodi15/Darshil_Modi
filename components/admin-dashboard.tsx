@@ -60,7 +60,7 @@ export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
         </a>
       </section>
 
-      {/* Visitor Overview */}
+      {/* Visitor Overview - Comprehensive Metrics */}
       <section className="metrics-grid" aria-label="Visitor metrics">
         <MetricTile
           label="Total Visitors"
@@ -82,9 +82,14 @@ export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
           value={metrics.monthVisitors.toString()}
           detail="Last 30 days"
         />
+        <MetricTile
+          label="Countries Reached"
+          value={metrics.countriesReached.toString()}
+          detail="Unique countries"
+        />
       </section>
 
-      {/* Contact Form Metrics */}
+      {/* Contact Form & Interaction Metrics */}
       <section className="metrics-grid" aria-label="Contact form metrics">
         <MetricTile
           label="Total Messages"
@@ -112,7 +117,7 @@ export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
               <strong>From:</strong> {metrics.latestMessage.name} ({metrics.latestMessage.email})
             </p>
             <p style={{ margin: "0 0 8px 0" }}>
-              <strong>Subject:</strong> {metrics.latestMessage.subject}
+              <strong>Subject:</strong> {metrics.latestMessage.subject || "(No Subject)"}
             </p>
             <p style={{ margin: "0", whiteSpace: "pre-wrap", color: "#666" }}>
               {metrics.latestMessage.message.substring(0, 200)}
@@ -122,6 +127,35 @@ export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
               {formatDate(metrics.latestMessage.createdAt)}
             </p>
           </article>
+        </section>
+      )}
+
+      {/* Recent Visitors Panel */}
+      {metrics.recentVisitors.length > 0 && (
+        <section className="dashboard-panel">
+          <h2>Recent Visitors</h2>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+              <thead>
+                <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+                  <th style={{ padding: "8px", textAlign: "left", fontWeight: 600 }}>Country</th>
+                  <th style={{ padding: "8px", textAlign: "left", fontWeight: 600 }}>City</th>
+                  <th style={{ padding: "8px", textAlign: "left", fontWeight: 600 }}>Visit Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {metrics.recentVisitors.slice(0, 20).map((visitor) => (
+                  <tr key={visitor.id} style={{ borderBottom: "1px solid #f0f0f0" }}>
+                    <td style={{ padding: "8px" }}>{visitor.country}</td>
+                    <td style={{ padding: "8px" }}>{visitor.city}</td>
+                    <td style={{ padding: "8px", color: "#666", fontSize: "12px" }}>
+                      {formatDate(visitor.visitedAt)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
 

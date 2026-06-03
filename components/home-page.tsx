@@ -7,6 +7,7 @@ import { ContactForm } from "@/components/contact-form";
 import { MissionControlAssistant } from "@/components/mission-control-assistant";
 import { SiteNav } from "@/components/site-nav";
 import { Starfield } from "@/components/starfield";
+import { VisitorTracker } from "@/components/visitor-tracker";
 import {
   certificationTimeline,
   missions,
@@ -191,6 +192,7 @@ function Hero() {
 export function HomePage() {
   return (
     <>
+      <VisitorTracker />
       <Starfield />
       <SiteNav />
 
