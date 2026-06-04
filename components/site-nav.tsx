@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { navItems, profile } from "@/lib/portfolio-data";
 
 export function SiteNav() {
@@ -9,7 +10,14 @@ export function SiteNav() {
   return (
     <header className="site-header">
       <a className="brand-lockup" href="#mission-log" aria-label="Mission Log home">
-        <span className="brand-mark">ML</span>
+        <Image 
+          src="/logo.png" 
+          alt="DM Logo" 
+          width={48} 
+          height={48}
+          className="brand-logo"
+          priority
+        />
         <span>
           <strong>{profile.siteName}</strong>
           <small>{profile.name}</small>
