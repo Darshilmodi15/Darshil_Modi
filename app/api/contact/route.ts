@@ -20,7 +20,7 @@ async function sendEmail(
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     const result = await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "contact@darshilmodi.in",
       to,
       subject,
       html
