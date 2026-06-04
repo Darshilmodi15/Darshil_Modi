@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     title: "Mission Log | Darshil Modi",
     description: "Exploring AI, space, and the technology of tomorrow.",
     images: ["https://darshilmodi.in/logo.png"]
+  },
+  verification: {
+    google: "google432f68c0a6f1e6ca"
   }
 };
 
