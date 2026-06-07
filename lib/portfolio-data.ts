@@ -138,7 +138,7 @@ export const missions: Mission[] = [
       "Feedback"
     ],
     github: "https://github.com/Darshilmodi15/cyborg-landing ",
-    demo: "https://github.com/https://cyborg-landing.vercel.app"
+    demo: "https://cyborg-landing.vercel.app"
   }
 ];
 
