@@ -64,8 +64,8 @@ export const missions: Mission[] = [
       "Fit Scoring",
       "Decision Dashboard"
     ],
-    github: "#",
-    demo: "#",
+    github: "https://github.com/Darshilmodi15/talentai-x",
+    demo: "https://talentai-x.vercel.app",
     flagship: true
   },
   {
@@ -89,7 +89,7 @@ export const missions: Mission[] = [
       "Recommendation",
       "Action Log"
     ],
-    github: "#",
+    github: "https://github.com/Darshilmodi15/agri-sage-ai-agent1",
     demo: "#"
   },
   {
@@ -113,35 +113,11 @@ export const missions: Mission[] = [
       "Mentor Loop",
       "Progress Review"
     ],
-    github: "#",
+    github: "https://github.com/Darshilmodi15/EduMentor-Agent ",
     demo: "#"
   },
   {
     number: "Mission 04",
-    title: "Linguamate",
-    slug: "linguamate",
-    status: "Language AI",
-    summary:
-      "A language learning mission built around practice, feedback, and communication confidence.",
-    overview:
-      "Linguamate explores language practice through AI-assisted conversations, feedback, and learning routines.",
-    problem:
-      "Language learners need repetition and feedback, but consistent practice partners and useful corrections are not always available.",
-    solution:
-      "Linguamate creates a guided practice loop where learners can speak, review, and improve with context-aware support.",
-    technologies: ["React", "TypeScript", "AI", "OpenAI/Gemini"],
-    architecture: [
-      "Practice Prompt",
-      "Conversation",
-      "Feedback",
-      "Revision",
-      "Learning Memory"
-    ],
-    github: "#",
-    demo: "#"
-  },
-  {
-    number: "Mission 05",
     title: "Cyborg Nexus",
     slug: "cyborg-nexus",
     status: "Future Tech",
@@ -161,8 +137,8 @@ export const missions: Mission[] = [
       "System Action",
       "Feedback"
     ],
-    github: "#",
-    demo: "#"
+    github: "https://github.com/Darshilmodi15/cyborg-landing ",
+    demo: "https://github.com/https://cyborg-landing.vercel.app"
   }
 ];
 
@@ -225,27 +201,3 @@ export const assistantQuestions = [
       "Use the contact form on this portfolio or connect through the project links once the GitHub and demo URLs are added to each mission."
   }
 ];
-
-export const dashboardStaticData = {
-  traffic: [
-    { label: "Mon", value: 62 },
-    { label: "Tue", value: 48 },
-    { label: "Wed", value: 76 },
-    { label: "Thu", value: 91 },
-    { label: "Fri", value: 84 },
-    { label: "Sat", value: 57 },
-    { label: "Sun", value: 69 }
-  ],
-  popularProjects: [
-    { label: "TalentAI-X", value: 44 },
-    { label: "Agri-Sage", value: 23 },
-    { label: "EduMentor", value: 18 },
-    { label: "Linguamate", value: 10 },
-    { label: "Cyborg Nexus", value: 5 }
-  ],
-  blogAnalytics: [
-    { label: "Draft logs", value: "4" },
-    { label: "Published logs", value: "0" },
-    { label: "First entries", value: "Preparing" }
-  ]
-};
