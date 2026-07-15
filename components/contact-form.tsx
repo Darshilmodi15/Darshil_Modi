@@ -62,7 +62,7 @@ export function ContactForm() {
         {state === "sending" ? "Sending…" : "Send Message"}
       </button>
       <p className="form-status" role="status" aria-live="polite">
-        {state === "sent" && "Message sent. Thank you — I’ll review it soon."}
+        {state === "sent" && "Message sent. Thank you. I will review it soon."}
         {state === "error" && errorMessage}
       </p>
     </form>

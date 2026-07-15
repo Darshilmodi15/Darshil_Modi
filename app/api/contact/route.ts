@@ -72,7 +72,7 @@ async function sendAutoReply(name: string, email: string): Promise<void> {
     <div style="font-family: Arial, sans-serif; max-width: 640px; color: #202020;">
       <h2>Thanks for reaching out, ${escapeHtml(name)}.</h2>
       <p>I received your message from darshilmodi.in and will review it soon.</p>
-      <p>— ${escapeHtml(ADMIN_NAME)}</p>
+      <p>- ${escapeHtml(ADMIN_NAME)}</p>
     </div>`;
 
   await sendEmail(email, "Thanks for contacting Darshil Modi", html);

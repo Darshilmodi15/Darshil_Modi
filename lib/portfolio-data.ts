@@ -99,14 +99,14 @@ export type Note = {
 
 export const personalInfo = {
   name: "Darshil Modi",
-  role: "AI/ML-Focused Software Engineer · Full-Stack Builder · Team Lead",
+  role: "AI/ML-focused software engineer",
   location: "Ahmedabad, Gujarat, India",
   education: "B.Tech CSE (AI & ML), Adani University",
   graduation: "2029",
   currentFocus: "AI/ML, multi-agent systems, LLM applications, backend systems, and full-stack products",
-  tagline: "Building intelligent systems, AI-agent applications, and full-stack products through internships, hackathons, and independent projects.",
-  achievementLine: "SIH ’25 Final-Round Selection · Tic Tech Toe ’26 Finalist",
-  currentStatus: "Software Engineer Intern at The Gap – AI Driven Research · Google Student Ambassador",
+  tagline: "I enjoy turning ambitious ideas into working products through AI, backend engineering, and thoughtful interfaces.",
+  achievementLine: "SIH 25 Final-Round Selection. Tic Tech Toe 26 Finalist",
+  currentStatus: "Software Engineer Intern at The Gap - AI Driven Research / Google Student Ambassador",
   email: "darshilmodi99@gmail.com",
   discord: "darshil1501",
   intro:
@@ -117,7 +117,7 @@ export const personalInfo = {
 };
 
 export const resume = {
-  label: "View Résumé",
+  label: "View Resume",
   url: "https://drive.google.com/file/d/1Gz1slrLHMM6OcsaCe9ABpPF0edMzsPDk/view?usp=share_link"
 };
 
@@ -139,9 +139,9 @@ export const navigation = [
 export const experience: ExperienceEntry[] = [
   {
     id: "the-gap-ai-driven-research",
-    organization: "The Gap – AI Driven Research",
+    organization: "The Gap - AI Driven Research",
     role: "Software Engineer Intern",
-    period: "July 2026 – Present",
+    period: "July 2026 - Present",
     location: "Remote / India",
     type: "Internship",
     status: "Current",
@@ -149,16 +149,16 @@ export const experience: ExperienceEntry[] = [
       "Selected among 10 Software Engineering Interns from 250+ applicants for The Gap, an AI-driven research platform. Currently completing onboarding before beginning cross-functional product engineering work.",
     bullets: [
       "Recently joined and currently completing onboarding before formal engineering delivery begins.",
-      "Expected contribution areas include frontend engineering across product dashboards, AI interfaces, reading experiences, and the public website.",
-      "Expected backend and platform work includes APIs, databases, authentication, scheduled jobs, testing, administration tools, bug triage, and QA.",
-      "Expected AI/ML integration areas include prompt workflows, literature-search integrations, relevance filtering, and deduplication."
+      "Expected work includes frontend features for dashboards, AI interfaces, reading flows, and the public website.",
+      "Expected backend work includes APIs, databases, authentication, scheduled jobs, testing, admin tools, bug triage, and QA.",
+      "Expected AI work includes prompt workflows, literature search integrations, relevance filtering, and deduplication."
     ]
   },
   {
     id: "enginow",
     organization: "Enginow",
     role: "Full Stack Developer Intern",
-    period: "June 2026 – July 2026",
+    period: "June 2026 - July 2026",
     type: "Internship",
     status: "Completed",
     summary:
@@ -167,7 +167,7 @@ export const experience: ExperienceEntry[] = [
       "Completed internship from June 8, 2026 to July 6, 2026.",
       "Built Eat the Frog individually as the official internship assignment.",
       "Designed and developed the complete full-stack application and deployed it during the internship.",
-      "Project was reviewed and accepted by Enginow; received an internship certificate, experience letter, and recommendation letter."
+      "Project was reviewed and accepted by Enginow.  received an internship certificate, experience letter, and recommendation letter."
     ]
   }
 ];
@@ -177,7 +177,7 @@ export const programs: ProgramEntry[] = [
     id: "google-student-ambassador",
     title: "Google Student Ambassador",
     organization: "Google Student Ambassadors (India)",
-    period: "June 2026 – Present",
+    period: "June 2026 - Present",
     status: "Current",
     summary:
       "Selected for the 12-month Google Student Ambassadors India program, focused on student engagement, technology awareness, community participation, and campus initiatives."
@@ -191,7 +191,7 @@ export const projects: Project[] = [
     shortDescription:
       "A multi-agent talent intelligence system exploring evidence-based candidate evaluation beyond keyword matching.",
     fullDescription:
-      "TalentAI-X was submitted for Tic Tech Toe ’26 by a four-member team. We reached the final stage, completed the final presentation, and demonstrated a working multi-agent talent intelligence prototype combining resume processing, skill normalisation, semantic matching, bias-aware evaluation design, and explainable candidate-analysis workflows. The project did not place in the top five.",
+      "TalentAI-X was submitted for Tic Tech Toe 26 by a four-member team. We reached the final stage, completed the final presentation, and demonstrated a working multi-agent talent intelligence prototype combining resume processing, skill normalisation, semantic matching, bias-aware evaluation design, and explainable candidate-analysis workflows. The project did not place in the top five.",
     category: "AI/ML",
     featured: true,
     status: "Working Prototype",
@@ -203,9 +203,9 @@ export const projects: Project[] = [
     solution:
       "The project structures candidate evidence, normalizes skills, and uses multi-agent workflows to produce clearer fit insights and review artifacts.",
     contributions: [
-      "Led project planning, technical direction, and final delivery for a four-member team.",
-      "Contributed across system architecture, AI workflows, backend APIs, database-backed candidate workflows, frontend integration, deployment, testing, developer productivity, and demo coordination.",
-      "Helped shape resume processing, skill normalisation, semantic candidate matching, evidence structuring, bias-aware evaluation design, and explainability workflows."
+      "Led a four-member team through planning, build decisions, delivery, and final presentation.",
+      "Contributed across AI workflows, backend APIs, frontend integration, deployment, testing, and demo coordination.",
+      "Helped shape resume processing, skill normalization, semantic matching, bias-aware evaluation design, and explainable candidate insights."
     ],
     features: [
       "Resume processing",
@@ -232,7 +232,7 @@ export const projects: Project[] = [
       "Talent products require careful wording around fairness, accuracy, and compliance."
     ],
     technologies: ["Python", "FastAPI", "LangGraph", "PostgreSQL", "ChromaDB", "Redis", "React"],
-    media: { type: "placeholder", alt: "talentai-x project media placeholder", caption: "TalentAI-X media placeholder. Add a product walkthrough video, GIF, or screenshots of the matching/evaluation flow when available." },
+    media: { type: "placeholder", alt: "talentai-x project media placeholder", caption: "Project media coming soon." },
     repositoryUrl: "https://github.com/Darshilmodi15/talentai-x",
     demoUrl: "https://talentai-x.vercel.app",
     demoStatus: "working"
@@ -264,7 +264,7 @@ export const projects: Project[] = [
     challenges: ["Keeping frontend and backend contracts consistent", "Designing learner and admin workflows in one product"],
     learnings: ["Full-stack products need careful state, auth, and data-model decisions.", "Monorepos make shared product structure easier to reason about."],
     technologies: ["TypeScript", "React", "Vite", "Node.js", "Express", "MongoDB", "JWT"],
-    media: { type: "placeholder", alt: "aimlearn project media placeholder", caption: "AimLearn media placeholder. Add course discovery, learner dashboard, and admin workflow screenshots when available." },
+    media: { type: "placeholder", alt: "aimlearn project media placeholder", caption: "Project media coming soon." },
     repositoryUrl: "https://github.com/Darshilmodi15/AimLearn",
     demoUrl: "https://aim-learn.vercel.app",
     demoStatus: "working"
@@ -296,7 +296,7 @@ export const projects: Project[] = [
     challenges: ["Compressing enterprise workflows into a hackathon timeline", "Balancing demo completeness with maintainable architecture"],
     learnings: ["Hackathon products need narrow scope and clear demo stories.", "Enterprise tools require permissions and auditability from the start."],
     technologies: ["FastAPI", "PostgreSQL", "Alembic", "React", "Vite", "TypeScript"],
-    media: { type: "placeholder", alt: "assetflow project media placeholder", caption: "AssetFlow media placeholder. Add virtual-round demo screenshots or a short workflow video when available." },
+    media: { type: "placeholder", alt: "assetflow project media placeholder", caption: "Project media coming soon." },
     repositoryUrl: "https://github.com/Darshilmodi15/odoo-hackathon---AssetFlow",
     demoStatus: "missing"
   },
@@ -321,7 +321,7 @@ export const projects: Project[] = [
     challenges: ["Keeping productivity features focused rather than overly complex"],
     learnings: ["Good productivity software should reduce decision load.", "Auth and state management shape the whole product experience."],
     technologies: ["React", "Node.js", "Express", "JWT", "PWA"],
-    media: { type: "placeholder", alt: "eat-the-frog project media placeholder", caption: "Eat the Frog media placeholder. Add task dashboard, workspace, and mobile/PWA screenshots when available." },
+    media: { type: "placeholder", alt: "eat-the-frog project media placeholder", caption: "Project media coming soon." },
     repositoryUrl: "https://github.com/Darshilmodi15/Eat-the-Frog",
     demoUrl: "https://eat-the-frog-phi.vercel.app",
     demoStatus: "working"
@@ -423,59 +423,36 @@ export const projects: Project[] = [
     demoUrl: "https://cyborg-landing.vercel.app",
     demoStatus: "working"
   },
-  {
-    slug: "rtk",
-    title: "RTK",
-    shortDescription: "A Rust CLI proxy for reducing noisy command output before it reaches LLM coding-agent context.",
-    fullDescription:
-      "RTK is an open-source developer-tool repository connected to the rtk-ai organization. It focuses on filtering and compressing common command outputs for LLM-assisted development workflows. Because ownership and contribution details need clarification, it is included as an additional project rather than homepage-selected work.",
-    category: "Developer Tool",
-    featured: false,
-    status: "Deployed",
-    year: "2026",
-    role: "Repository maintainer / contribution details to confirm",
-    teamType: "Open-source / Organization",
-    problem: "Coding agents can waste context on verbose command output.",
-    solution: "A Rust proxy filters outputs from common developer commands before they enter LLM context.",
-    contributions: ["Contribution scope should be confirmed before presenting as primary portfolio work."],
-    features: ["Rust binary", "Command output filtering", "Developer workflow focus"],
-    engineering: ["Rust CLI", "Command-specific output processing", "Documentation and distribution links"],
-    challenges: ["Maintaining accuracy while compressing output"],
-    learnings: ["Developer tools need predictable behavior and clear failure modes."],
-    technologies: ["Rust", "CLI", "LLM tooling"],
-    repositoryUrl: "https://github.com/Darshilmodi15/rtk",
-    demoUrl: "https://www.rtk-ai.app",
-    demoStatus: "working"
-  }
+
 ];
 
 export const achievements: Achievement[] = [
   {
-    title: "Smart India Hackathon 2025 — Final-Round Selection",
+    title: "Smart India Hackathon 2025 - Final-Round Selection",
     year: "2025",
     detail:
       "Led the concept and presentation of LinguaMate under the Student Innovation category. The proposal was selected for the final round, although the team did not proceed to the on-site build stage because of team readiness and coordination issues.",
     project: "LinguaMate"
   },
   {
-    title: "Tic Tech Toe ’26 — Finalist",
+    title: "Tic Tech Toe 26 - Finalist",
     year: "2026",
     detail:
-      "Led a four-member team to the final round of Tic Tech Toe ’26, where we presented a working prototype of TalentAI-X, a multi-agent talent intelligence system. The project reached the final stage but did not place in the top five.",
+      "Led a four-member team to the final round of Tic Tech Toe 26, where we presented a working prototype of TalentAI-X, a multi-agent talent intelligence system. The project reached the final stage but did not place in the top five.",
     project: "TalentAI-X"
   },
   {
-    title: "Odoo Hackathon Virtual Round — Submitted",
+    title: "Odoo Hackathon Virtual Round - Submitted",
     year: "2026",
     detail:
       "Led Team Terminal in developing AssetFlow for the Odoo Hackathon virtual round. Submitted on July 12, 2026; results pending and expected on July 31, 2026.",
     project: "AssetFlow"
   },
   {
-    title: "Tic Tech Toe ’26 — Supporting Credential",
+    title: "Tic Tech Toe 26 - Supporting Credential",
     year: "2026",
     detail:
-      "Certificate of Participation in Idea Submission (Online) for Tic Tech Toe ’26, issued through Unstop. This supports participation documentation; the finalist result remains the primary achievement.",
+      "Certificate of Participation in Idea Submission (Online) for Tic Tech Toe 26, issued through Unstop. This supports participation documentation; the finalist result remains the primary achievement.",
     project: "TalentAI-X",
     credentialUrl: "https://unstop.com/certificate-preview/ff60578a-0037-4da9-a124-8f794846a6f5"
   }
@@ -487,7 +464,7 @@ export const certifications: Certification[] = [
     issuer: "Anthropic Academy",
     year: "May 2026",
     credentialUrl: "https://verify.skilljar.com/c/863umn6iwvt8",
-    note: "Completed Anthropic Academy’s 13-lesson, five-module Claude 101 program covering Claude’s core capabilities, structured prompting, Projects, Artifacts, Skills, Connectors, research workflows, document analysis, automation, and responsible AI use. Credential ID: 863umn6iwvt8."
+    note: "Completed Anthropic Academy's 13-lesson, five-module Claude 101 program covering Claude's core capabilities, structured prompting, Projects, Artifacts, Skills, Connectors, research workflows, document analysis, automation, and responsible AI use. Credential ID: 863umn6iwvt8."
   },
   {
     name: "5-Day AI Agents Intensive Course with Google",
@@ -547,41 +524,6 @@ export const notes: Note[] = [
     topics: ["Hackathons", "Leadership", "Product engineering"]
   }
 ];
-
-export const assistantKnowledge = [
-  {
-    question: "Who is Darshil?",
-    answer:
-      "Darshil Modi is a B.Tech CSE (AI & ML) student at Adani University in Ahmedabad, focused on applied AI, multi-agent systems, LLM applications, backend systems, and full-stack product engineering."
-  },
-  {
-    question: "What AI projects has Darshil built?",
-    answer:
-      "The AI-focused projects shown here include TalentAI-X, Agri-Sage, and EduMentor. TalentAI-X was a Tic Tech Toe ’26 finalist working prototype; Agri-Sage is a Kaggle Agents Intensive capstone prototype; EduMentor is an individual AI-agent prototype."
-  },
-  {
-    question: "What was Darshil’s role in TalentAI-X?",
-    answer:
-      "TalentAI-X was built by a four-member team for Tic Tech Toe ’26. Darshil’s role was Team Lead & Cross-Functional Engineer, contributing across planning, AI workflows, backend APIs, database-backed candidate workflows, frontend integration, testing, and demo coordination."
-  },
-  {
-    question: "Which hackathons has Darshil participated in?",
-    answer:
-      "The portfolio lists SIH ’25 Final-Round Selection for LinguaMate, Tic Tech Toe ’26 finalist for TalentAI-X, and Odoo Hackathon Virtual Round submission for AssetFlow, where Darshil led Team Terminal."
-  },
-  {
-    question: "What opportunities is Darshil open to?",
-    answer:
-      "Darshil is open to AI/ML internships, software engineering opportunities, hackathons, technical collaborations, and conversations about intelligent systems."
-  },
-  {
-    question: "How can I contact Darshil?",
-    answer:
-      "Use the contact page, email darshilmodi99@gmail.com, Discord @darshil1501, LinkedIn, or GitHub."
-  }
-];
-
-export const assistantQuestions = assistantKnowledge;
 
 export const featuredProjects = projects.filter((project) => project.featured).slice(0, 3);
 

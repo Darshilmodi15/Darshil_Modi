@@ -28,7 +28,7 @@ export default function AchievementsPage() {
       </section>
       <section className="section container">
         <div className="section-header"><p className="eyebrow">Programs</p><h2>Current campus/community program.</h2></div>
-        <div className="cards-grid">{programs.map((program) => <article className="panel" key={program.id}><span className="tag">{program.status}</span><h3>{program.title}</h3><p className="muted">{program.organization} · {program.period}</p><p>{program.summary}</p></article>)}</div>
+        <div className="cards-grid">{programs.map((program) => <article className="panel" key={program.id}><span className="tag">{program.status}</span><h3>{program.title}</h3><p className="muted">{program.organization} / {program.period}</p><p>{program.summary}</p></article>)}</div>
       </section>
       <section className="section container">
         <div className="section-header"><p className="eyebrow">Certifications</p><h2>Verified learning credentials.</h2></div>
@@ -36,7 +36,7 @@ export default function AchievementsPage() {
           {certifications.map((cert) => (
             <article className="cert-card" key={cert.name}>
               <h3>{cert.name}</h3>
-              <p>{cert.issuer}{cert.year ? ` · ${cert.year}` : ""}</p>
+              <p>{cert.issuer}{cert.year ? ` / ${cert.year}` : ""}</p>
               {cert.credentialUrl ? <a className="text-link" href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" aria-label={`Verify credential for ${cert.name}`}>Verify credential ↗</a> : <span className="muted">Credential link needed</span>}
               {cert.note && <small>{cert.note}</small>}
             </article>

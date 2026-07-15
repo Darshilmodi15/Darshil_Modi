@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRightIcon, ExternalIcon, GithubIcon } from "@/components/icons";
 import { ContactCTA } from "@/components/section-blocks";
 import { achievements, experience, featuredProjects, personalInfo, programs, resume, socialLinks } from "@/lib/portfolio-data";
 
@@ -8,17 +9,14 @@ export function HomePage() {
     <main>
       <section className="hero container">
         <div className="hero-copy">
-          <p className="eyebrow">Ahmedabad · B.Tech CSE (AI & ML)</p>
-          <h1>AI/ML-Focused Software Engineer · Full-Stack Builder · Team Lead.</h1>
-          <p className="hero-lede">{personalInfo.tagline}</p>
-          <div className="hero-signals" aria-label="Current status and achievements">
-            <span>{personalInfo.currentStatus}</span>
-            <span>{personalInfo.achievementLine}</span>
-          </div>
+          <p className="eyebrow">Darshil Modi</p>
+          <h1>I build AI products and full-stack software.</h1>
+          <p className="hero-lede">B.Tech CSE (AI & ML) student at Adani University, currently working as a Software Engineer Intern at The Gap.</p>
+          <p className="hero-subtle">I enjoy turning ambitious ideas into working products through AI, backend engineering, and thoughtful interfaces.</p>
           <div className="hero-actions">
-            <Link className="button primary" href="/projects">View Selected Work</Link>
+            <Link className="button primary" href="/projects">View Projects</Link>
             <Link className="button" href="/about">About Me</Link>
-            <a className="button" href={resume.url} target="_blank" rel="noopener noreferrer">View Résumé</a>
+            <a className="button" href={resume.url} target="_blank" rel="noopener noreferrer">Resume</a>
           </div>
           <div className="inline-links" aria-label="Public profiles">
             {socialLinks.map((link) => (
@@ -32,8 +30,8 @@ export function HomePage() {
           </div>
           <div className="profile-card">
             <span>Current direction</span>
-            <strong>{personalInfo.role}</strong>
-            <p>{personalInfo.currentFocus}</p>
+            <strong>{personalInfo.currentStatus}</strong>
+            <p>{personalInfo.achievementLine}</p>
           </div>
         </div>
       </section>
@@ -58,9 +56,9 @@ export function HomePage() {
                   {project.features.slice(0, 3).map((feature) => <li key={feature}>{feature}</li>)}
                 </ul>
                 <div className="card-actions">
-                  <Link className="text-link" href={`/projects/${project.slug}`}>View case study</Link>
-                  {project.demoUrl && project.demoStatus === "working" && <a className="text-link" href={project.demoUrl} target="_blank" rel="noopener noreferrer">Live demo</a>}
-                  <a className="text-link" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">Source</a>
+                  <Link className="text-link with-icon" href={`/projects/${project.slug}`}><ArrowRightIcon /> View case study</Link>
+                  {project.demoUrl && project.demoStatus === "working" && <a className="text-link with-icon" href={project.demoUrl} target="_blank" rel="noopener noreferrer"><ExternalIcon /> Live demo</a>}
+                  <a className="text-link with-icon" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer"><GithubIcon /> Source code</a>
                 </div>
               </div>
             </article>

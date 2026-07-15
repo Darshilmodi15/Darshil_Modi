@@ -26,7 +26,7 @@ export default function AboutPage() {
           <div className="card-actions">
             <Link className="button primary" href="/projects">Explore projects</Link>
             <Link className="button" href="/experience">View experience</Link>
-            <a className="button" href={resume.url} target="_blank" rel="noopener noreferrer">Open Résumé</a>
+            <a className="button" href={resume.url} target="_blank" rel="noopener noreferrer">Open Resume</a>
           </div>
         </article>
         <aside className="profile-facts">
@@ -34,8 +34,8 @@ export default function AboutPage() {
           <div><span>Education</span><strong>{personalInfo.education}</strong></div>
           <div><span>Graduation</span><strong>{personalInfo.graduation}</strong></div>
           <div><span>Current focus</span><strong>{personalInfo.currentFocus}</strong></div>
-          <div><span>Current experience</span><strong>{experience[0].role} · {experience[0].organization}</strong></div>
-          <div><span>Program</span><strong>{programs[0].title} · {programs[0].period}</strong></div>
+          <div><span>Current experience</span><strong>{experience[0].role} / {experience[0].organization}</strong></div>
+          <div><span>Program</span><strong>{programs[0].title} / {programs[0].period}</strong></div>
           <div className="fact-links">
             {socialLinks.map((link) => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}
           </div>

@@ -29,7 +29,7 @@ export default function ExperiencePage() {
             <article className="panel" key={program.id}>
               <span className="tag">{program.status}</span>
               <h3>{program.title}</h3>
-              <p className="muted">{program.organization} · {program.period}</p>
+              <p className="muted">{program.organization} / {program.period}</p>
               <p>{program.summary}</p>
             </article>
           ))}

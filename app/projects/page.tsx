@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRightIcon, ExternalIcon, GithubIcon } from "@/components/icons";
 import { PageIntro } from "@/components/section-blocks";
 import { projects } from "@/lib/portfolio-data";
 
@@ -22,12 +23,12 @@ export default function ProjectsPage() {
                 <h2>{project.title}</h2>
                 <p>{project.shortDescription}</p>
                 <p className="muted"><strong>My role:</strong> {project.role}</p>
-                <div className="tech-row">{project.technologies.slice(0, 6).map((tech) => <span key={tech}>{tech}</span>)}</div>
+                <div className="tech-row">{project.technologies.slice(0, 4).map((tech) => <span key={tech}>{tech}</span>)}</div>
               </div>
               <div className="archive-actions">
-                <Link className="text-link" href={`/projects/${project.slug}`}>View case study</Link>
-                {project.demoUrl && project.demoStatus === "working" && <a className="text-link" href={project.demoUrl} target="_blank" rel="noopener noreferrer">Live demo</a>}
-                <a className="text-link" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">Source code</a>
+                <Link className="text-link with-icon" href={`/projects/${project.slug}`}><ArrowRightIcon /> View case study</Link>
+                {project.demoUrl && project.demoStatus === "working" && <a className="text-link with-icon" href={project.demoUrl} target="_blank" rel="noopener noreferrer"><ExternalIcon /> Live demo</a>}
+                <a className="text-link with-icon" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer"><GithubIcon /> Source code</a>
               </div>
             </article>
           ))}

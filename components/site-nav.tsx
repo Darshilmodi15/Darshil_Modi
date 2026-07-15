@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { navigation, personalInfo, resume } from "@/lib/portfolio-data";
 
 export function SiteNav() {
@@ -42,8 +43,9 @@ export function SiteNav() {
           );
         })}
         <a className="nav-resume" href={resume.url} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
-          Résumé
+          Resume
         </a>
+        <ThemeToggle />
       </nav>
     </header>
   );

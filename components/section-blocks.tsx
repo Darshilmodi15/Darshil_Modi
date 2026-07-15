@@ -16,11 +16,11 @@ export function ContactCTA() {
     <section className="section container">
       <div className="contact-cta">
         <p className="eyebrow">Contact</p>
-        <h2>Let’s build useful intelligent systems.</h2>
-        <p>{personalInfo.availability}</p>
+        <h2>Let’s talk.</h2>
+        <p>Have an opportunity, project, or idea in mind? Send me a message.</p>
         <div className="hero-actions">
           <Link className="button primary" href="/contact">Start a conversation</Link>
-          <a className="button" href={resume.url} target="_blank" rel="noopener noreferrer">Open Résumé</a>
+          <a className="button" href={resume.url} target="_blank" rel="noopener noreferrer">Open Resume</a>
           {socialLinks.map((link) => (
             <a className="button quiet" key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
           ))}

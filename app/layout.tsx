@@ -1,11 +1,21 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { FooterActions } from "@/components/footer-actions";
+import { InteractiveBackground } from "@/components/interactive-background";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { SiteNav } from "@/components/site-nav";
 import { VisitorTracker } from "@/components/visitor-tracker";
 import { personalInfo, resume, socialLinks } from "@/lib/portfolio-data";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f3f0e9" },
+    { media: "(prefers-color-scheme: dark)", color: "#10100f" }
+  ]
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://darshilmodi.in"),
@@ -62,22 +72,21 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-HBWEEL01Y8" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-HBWEEL01Y8');` }} />
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var saved=localStorage.getItem('theme');var system=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';var theme=saved||system;document.documentElement.dataset.theme=theme;}catch(e){document.documentElement.dataset.theme='dark';}})();` }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </head>
       <body>
+        <InteractiveBackground />
+        <ScrollProgress />
         <VisitorTracker />
         <SiteNav />
         {children}
         <footer className="site-footer">
           <div>
             <strong>Darshil Modi</strong>
-            <p>AI/ML-focused software engineer · Ahmedabad, India · <a href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a></p>
+            <p>AI/ML software engineer / Ahmedabad, India / <a href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a></p>
           </div>
-          <nav aria-label="Footer links">
-            {socialLinks.map((link) => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}
-            <span>Discord: @{personalInfo.discord}</span>
-            <a href={resume.url} target="_blank" rel="noopener noreferrer">Résumé</a>
-          </nav>
+          <FooterActions />
         </footer>
         <Analytics />
         <SpeedInsights />
