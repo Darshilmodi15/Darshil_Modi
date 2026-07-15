@@ -1,0 +1,38 @@
+import Link from "next/link";
+import { PageIntro } from "@/components/section-blocks";
+import { projects } from "@/lib/portfolio-data";
+
+export const metadata = { title: "Projects | Darshil Modi" };
+
+const groups = ["Featured", "AI/ML", "Full-Stack", "Hackathon", "Experiment", "Developer Tool"] as const;
+
+export default function ProjectsPage() {
+  return (
+    <main>
+      <PageIntro eyebrow="Projects" title="A curated archive of AI, full-stack, and hackathon builds." text="Not every repository is shown here. This page focuses on projects that best explain my current direction and practical experience." />
+      <section className="section container">
+        <div className="filter-note" aria-label="Project groups">
+          {groups.map((group) => <span key={group}>{group}</span>)}
+        </div>
+        <div className="project-archive">
+          {projects.map((project) => (
+            <article className="archive-card" key={project.slug}>
+              <div>
+                <div className="project-meta"><span>{project.category}</span><span>{project.status}</span><span>{project.teamType}</span></div>
+                <h2>{project.title}</h2>
+                <p>{project.shortDescription}</p>
+                <p className="muted"><strong>My role:</strong> {project.role}</p>
+                <div className="tech-row">{project.technologies.slice(0, 6).map((tech) => <span key={tech}>{tech}</span>)}</div>
+              </div>
+              <div className="archive-actions">
+                <Link className="text-link" href={`/projects/${project.slug}`}>View case study</Link>
+                {project.demoUrl && project.demoStatus === "working" && <a className="text-link" href={project.demoUrl} target="_blank" rel="noopener noreferrer">Live demo</a>}
+                <a className="text-link" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">Source code</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
