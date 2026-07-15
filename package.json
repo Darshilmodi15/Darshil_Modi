@@ -12,6 +12,7 @@
     "check:contact": "node scripts/check-contact-integrations.js"
   },
   "dependencies": {
+    "@react-email/render": "^2.1.0",
     "@react-three/fiber": "^9.1.2",
     "@supabase/server": "^1.4.0",
     "@supabase/supabase-js": "^2.107.0",
