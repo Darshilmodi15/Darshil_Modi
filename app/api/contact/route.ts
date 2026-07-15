@@ -1,20 +1,24 @@
-import { NextResponse } from "next/server";
+import { randomUUID } from "crypto";
+import { createElement } from "react";
+import { ContactAdminEmail } from "@/components/emails/contact-admin-email";
+import { ContactConfirmationEmail } from "@/components/emails/contact-confirmation-email";
+import { sendEmail, type EmailSendResult } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase";
+import { NextResponse } from "next/server";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_NAME = process.env.ADMIN_NAME || "Darshil Modi";
+const CONTACT_REPLY_TO_EMAIL = process.env.CONTACT_REPLY_TO_EMAIL || "darshilmodi99@gmail.com";
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 3;
 const submissions = new Map<string, number[]>();
 
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+type ContactStorageResult = {
+  stored: boolean;
+  submissionId?: string;
+  createdAt: string;
+  error?: string;
+};
 
 function getClientIP(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -32,53 +36,133 @@ function isRateLimited(ip: string) {
   return false;
 }
 
-async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
-  if (!process.env.RESEND_API_KEY) return false;
+function firstName(name: string) {
+  return name.trim().split(/\s+/)[0] || "there";
+}
 
-  try {
-    const { Resend } = await import("resend");
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const result = await resend.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL || "contact@darshilmodi.in",
-      to,
-      subject,
-      html
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Kolkata"
+  }).format(new Date(date));
+}
+
+function buildAdminText(input: { name: string; email: string; subject: string; message: string; submittedAt: string; submissionId?: string; storageWarning?: string }) {
+  return [
+    "DARSHIL MODI - Portfolio contact",
+    input.storageWarning ? `Storage warning: ${input.storageWarning}` : undefined,
+    `Sender: ${input.name}`,
+    `Email: ${input.email}`,
+    `Subject: ${input.subject}`,
+    `Submitted: ${input.submittedAt}`,
+    `Source: darshilmodi.in${input.submissionId ? ` / ${input.submissionId}` : ""}`,
+    "",
+    "Message:",
+    input.message
+  ].filter(Boolean).join("\n");
+}
+
+function buildConfirmationText(input: { firstName: string; subject: string; message: string; submittedAt: string }) {
+  return [
+    `Thanks for reaching out, ${input.firstName}.`,
+    "",
+    "I received your message and will read it soon. Here is a quick copy of what you sent.",
+    "",
+    `Subject: ${input.subject}`,
+    `Date submitted: ${input.submittedAt}`,
+    "",
+    "Your message:",
+    input.message,
+    "",
+    "You can reply directly to this email if you need to add anything.",
+    "",
+    "Darshil Modi",
+    "AI/ML and Software Engineering",
+    "https://darshilmodi.in"
+  ].join("\n");
+}
+
+async function storeContactMessage(input: { name: string; email: string; subject: string; message: string }): Promise<ContactStorageResult> {
+  const createdAtFallback = new Date().toISOString();
+  const supabase = getSupabaseAdminClient();
+
+  if (!supabase) {
+    console.error("[CONTACT_DB_ERROR] Supabase admin client is not configured");
+    return { stored: false, createdAt: createdAtFallback, error: "Supabase is not configured" };
+  }
+
+  const { data, error } = await supabase
+    .from("contact_messages")
+    .insert({
+      name: input.name,
+      email: input.email,
+      subject: input.subject,
+      message: input.message,
+      is_read: false
+    })
+    .select("id, created_at")
+    .single();
+
+  if (error) {
+    console.error("[CONTACT_DB_ERROR]", {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint
     });
-    return !result.error;
-  } catch (error) {
-    console.error("Email sending failed:", error);
-    return false;
+    return { stored: false, createdAt: createdAtFallback, error: error.message };
   }
+
+  return { stored: true, submissionId: data.id, createdAt: data.created_at || createdAtFallback };
 }
 
-async function sendAdminNotification(name: string, email: string, subject: string, message: string): Promise<boolean> {
+async function sendAdminNotification(input: { name: string; email: string; subject: string; message: string; submittedAt: string; submissionId?: string; storageWarning?: string; idempotencyKey: string }): Promise<EmailSendResult> {
   if (!ADMIN_EMAIL) {
-    console.error("ADMIN_EMAIL is not configured");
-    return false;
+    console.error("Missing environment variable: ADMIN_EMAIL");
+    return { ok: false, error: "ADMIN_EMAIL is not configured" };
   }
 
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 640px; color: #202020;">
-      <h2>New portfolio contact</h2>
-      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-      <p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
-      <p><strong>Subject:</strong> ${escapeHtml(subject || "(No subject)")}</p>
-      <hr />
-      <p style="white-space: pre-wrap;">${escapeHtml(message)}</p>
-    </div>`;
+  const result = await sendEmail({
+    to: ADMIN_EMAIL,
+    subject: `New portfolio message from ${input.name}: ${input.subject}`,
+    react: createElement(ContactAdminEmail, { name: input.name, email: input.email, subject: input.subject, message: input.message, submittedAt: input.submittedAt, submissionId: input.submissionId, storageWarning: input.storageWarning }),
+    text: buildAdminText(input),
+    replyTo: input.email,
+    tags: [
+      { name: "source", value: "portfolio_contact" },
+      { name: "type", value: "admin_notification" },
+      { name: "submission", value: input.idempotencyKey }
+    ]
+  });
 
-  return sendEmail(ADMIN_EMAIL, `Portfolio contact: ${subject || "(No subject)"}`, html);
+  if (!result.ok) {
+    console.error("[CONTACT_ADMIN_EMAIL_ERROR]", result.error || "Unknown admin email error");
+  }
+
+  return result;
 }
 
-async function sendAutoReply(name: string, email: string): Promise<boolean> {
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 640px; color: #202020;">
-      <h2>Thanks for reaching out, ${escapeHtml(name)}.</h2>
-      <p>I received your message from darshilmodi.in and will review it soon.</p>
-      <p>- ${escapeHtml(ADMIN_NAME)}</p>
-    </div>`;
+async function sendConfirmationEmail(input: { name: string; email: string; subject: string; message: string; submittedAt: string; idempotencyKey: string }): Promise<EmailSendResult> {
+  const visitorFirstName = firstName(input.name);
+  const result = await sendEmail({
+    to: input.email,
+    subject: `I received your message, ${visitorFirstName}`,
+    react: createElement(ContactConfirmationEmail, { firstName: visitorFirstName, subject: input.subject, message: input.message, submittedAt: input.submittedAt }),
+    text: buildConfirmationText({ firstName: visitorFirstName, subject: input.subject, message: input.message, submittedAt: input.submittedAt }),
+    replyTo: CONTACT_REPLY_TO_EMAIL,
+    tags: [
+      { name: "source", value: "portfolio_contact" },
+      { name: "type", value: "visitor_confirmation" },
+      { name: "submission", value: input.idempotencyKey }
+    ]
+  });
 
-  return sendEmail(email, "Thanks for contacting Darshil Modi", html);
+  if (!result.ok) {
+    console.error("[CONTACT_CONFIRMATION_EMAIL_ERROR]", result.error || "Unknown confirmation email error");
+  }
+
+  return result;
 }
 
 export async function POST(request: Request) {
@@ -115,39 +199,42 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Too many messages. Please try again later or use LinkedIn." }, { status: 429 });
   }
 
-  const supabase = getSupabaseAdminClient();
-  let stored = false;
+  const idempotencyKey = randomUUID();
+  const storage = await storeContactMessage({ name, email, subject, message });
+  const submittedAt = formatDate(storage.createdAt);
+  const storageWarning = storage.stored ? undefined : "The message was delivered by email but could not be saved.";
 
-  if (supabase) {
-    const { error: dbError } = await supabase.from("contact_messages").insert({
-      name,
-      email,
-      subject,
-      message,
-      is_read: false,
-      created_at: new Date().toISOString()
-    });
-
-    if (dbError) {
-      console.error("Contact database error:", dbError);
-    } else {
-      stored = true;
-    }
-  } else {
-    console.error("Supabase is not configured. Contact message will only be emailed.");
-  }
-
-  const [adminEmailSent, autoReplySent] = await Promise.all([
-    sendAdminNotification(name, email, subject, message),
-    sendAutoReply(name, email)
+  const [adminResult, confirmationResult] = await Promise.all([
+    sendAdminNotification({ name, email, subject, message, submittedAt, submissionId: storage.submissionId || idempotencyKey, storageWarning, idempotencyKey }),
+    sendConfirmationEmail({ name, email, subject, message, submittedAt, idempotencyKey })
   ]);
 
-  if (!stored && !adminEmailSent) {
+  if (!storage.stored && !adminResult.ok) {
     return NextResponse.json(
       { ok: false, error: "Message could not be saved or emailed. Please contact me directly by email or LinkedIn." },
       { status: 500 }
     );
   }
 
-  return NextResponse.json({ ok: true, stored, adminEmailSent, autoReplySent });
+  const response = {
+    ok: true,
+    submissionId: storage.submissionId,
+    stored: storage.stored,
+    adminEmailSent: adminResult.ok,
+    confirmationEmailSent: confirmationResult.ok,
+    warning: storage.stored ? undefined : "The message was delivered by email but could not be saved.",
+    ...(process.env.NODE_ENV !== "production"
+      ? {
+          debug: {
+            adminEmailId: adminResult.id,
+            confirmationEmailId: confirmationResult.id,
+            storageError: storage.error,
+            adminEmailError: adminResult.error,
+            confirmationEmailError: confirmationResult.error
+          }
+        }
+      : {})
+  };
+
+  return NextResponse.json(response);
 }

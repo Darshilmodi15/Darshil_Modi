@@ -7,11 +7,13 @@ type FormState = "idle" | "sending" | "sent" | "error";
 export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState("Message sent. I have also emailed you a confirmation.");
 
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState("sending");
     setErrorMessage(null);
+    setSuccessMessage("Message sent. I have also emailed you a confirmation.");
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -23,13 +25,15 @@ export function ContactForm() {
       body: JSON.stringify(payload)
     }).catch(() => null);
 
+    const body = response ? await response.json().catch(() => null) : null;
+
     if (response?.ok) {
+      setSuccessMessage(body?.confirmationEmailSent === false ? "Message sent successfully." : "Message sent. I have also emailed you a confirmation.");
       setState("sent");
       form.reset();
       return;
     }
 
-    const body = response ? await response.json().catch(() => null) : null;
     setErrorMessage(body?.error || "Message could not be sent. Please try LinkedIn if the issue continues.");
     setState("error");
   }
@@ -62,7 +66,7 @@ export function ContactForm() {
         {state === "sending" ? "Sending…" : "Send Message"}
       </button>
       <p className="form-status" role="status" aria-live="polite">
-        {state === "sent" && "Message sent. Thank you. I will review it soon."}
+        {state === "sent" && successMessage}
         {state === "error" && errorMessage}
       </p>
     </form>

@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit && npm run check:copy",
-    "check:copy": "node scripts/check-public-copy.js"
+    "check:copy": "node scripts/check-public-copy.js",
+    "check:contact": "node scripts/check-contact-integrations.js"
   },
   "dependencies": {
     "@react-three/fiber": "^9.1.2",
