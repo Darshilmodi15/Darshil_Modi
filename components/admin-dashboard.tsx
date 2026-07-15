@@ -1,5 +1,7 @@
-import type { DashboardMetrics, ActivityEvent } from "@/lib/supabase";
+import type { DashboardMetrics } from "@/lib/supabase";
 import RecentMessages from "@/components/recent-messages";
+
+/* ── Helpers ──────────────────────────────────────────── */
 
 function MetricTile({
   label,
@@ -29,42 +31,100 @@ function formatDate(dateString: string) {
   });
 }
 
-function ActivityFeedItem({ event }: { event: ActivityEvent }) {
-  const iconMap = {
-    visitor: "👤",
-    contact: "📧",
-    question: "❓"
-  };
+/* ── Bar Chart ────────────────────────────────────────── */
+
+function BarChart({
+  items,
+  labelKey,
+  countKey
+}: {
+  items: { [key: string]: any }[];
+  labelKey: string;
+  countKey: string;
+}) {
+  if (items.length === 0) {
+    return <p className="no-data">No data available</p>;
+  }
+
+  const max = items[0]?.[countKey] || 1;
 
   return (
-    <li style={{ paddingBottom: "12px", borderBottom: "1px solid #e0e0e0" }}>
-      <span>{iconMap[event.type]}</span>
-      <div>
-        <p style={{ margin: "0 0 4px 0", fontWeight: "500" }}>{event.title}</p>
-        <p style={{ margin: "0", fontSize: "12px", color: "#666" }}>{formatDate(event.timestamp)}</p>
-      </div>
-    </li>
+    <div className="bar-chart">
+      {items.map((item) => (
+        <div key={item[labelKey]} className="bar-row">
+          <span className="bar-label" title={item[labelKey]}>
+            {item[labelKey]}
+          </span>
+          <div className="bar-track">
+            <div
+              className="bar-fill"
+              style={{ width: `${(item[countKey] / max) * 100}%` }}
+            />
+          </div>
+          <span className="bar-count">{item[countKey]}</span>
+        </div>
+      ))}
+    </div>
   );
 }
+
+/* ── Trend Chart (Today / Week / Month) ───────────────── */
+
+function TrendChart({
+  today,
+  week,
+  month
+}: {
+  today: number;
+  week: number;
+  month: number;
+}) {
+  const max = Math.max(today, week, month, 1);
+  const rows = [
+    { label: "Today", value: today },
+    { label: "7 days", value: week },
+    { label: "30 days", value: month }
+  ];
+
+  return (
+    <div className="trend-bars">
+      {rows.map((row) => (
+        <div key={row.label} className="trend-row">
+          <span className="trend-label">{row.label}</span>
+          <div className="trend-track">
+            <div
+              className="trend-fill"
+              style={{ width: `${(row.value / max) * 100}%` }}
+            />
+          </div>
+          <span className="trend-value">{row.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Main Dashboard ───────────────────────────────────── */
 
 export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
   return (
     <main className="dashboard-shell">
+      {/* Header */}
       <section className="dashboard-hero">
         <div>
           <p className="eyebrow">Mission Control</p>
           <h1>Private dashboard</h1>
         </div>
         <a className="dashboard-home" href="/">
-          View Site
+          ← View Site
         </a>
       </section>
 
-      {/* Visitor Overview - Comprehensive Metrics */}
+      {/* Visitor Stats */}
       <section className="metrics-grid" aria-label="Visitor metrics">
         <MetricTile
           label="Total Visitors"
-          value={metrics.totalVisitors.toString()}
+          value={metrics.totalVisitors.toLocaleString()}
           detail="All-time visitor count"
         />
         <MetricTile
@@ -82,15 +142,15 @@ export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
           value={metrics.monthVisitors.toString()}
           detail="Last 30 days"
         />
+      </section>
+
+      {/* Secondary Stats */}
+      <section className="metrics-grid" aria-label="Contact metrics">
         <MetricTile
           label="Countries Reached"
           value={metrics.countriesReached.toString()}
           detail="Unique countries"
         />
-      </section>
-
-      {/* Contact Form & Interaction Metrics */}
-      <section className="metrics-grid" aria-label="Contact form metrics">
         <MetricTile
           label="Total Messages"
           value={metrics.totalMessages.toString()}
@@ -101,141 +161,71 @@ export function AdminDashboard({ metrics }: { metrics: DashboardMetrics }) {
           value={metrics.unreadMessages.toString()}
           detail="Messages requiring attention"
         />
-        <MetricTile
-          label="AI Questions"
-          value={metrics.totalInteractions.toString()}
-          detail="Mission Control interactions"
-        />
       </section>
 
-      {/* Latest Message */}
-      {metrics.latestMessage && (
-        <section className="dashboard-panel">
+      {/* Latest Message + Visitor Trend */}
+      <section className="dashboard-columns">
+        <article className="dashboard-panel">
           <h2>Latest Message</h2>
-          <article style={{ backgroundColor: "#f9f9f9", padding: "16px", borderRadius: "4px" }}>
-            <p style={{ margin: "0 0 8px 0" }}>
-              <strong>From:</strong> {metrics.latestMessage.name} ({metrics.latestMessage.email})
-            </p>
-            <p style={{ margin: "0 0 8px 0" }}>
-              <strong>Subject:</strong> {metrics.latestMessage.subject || "(No Subject)"}
-            </p>
-            <p style={{ margin: "0", whiteSpace: "pre-wrap", color: "#666" }}>
-              {metrics.latestMessage.message.substring(0, 200)}
-              {metrics.latestMessage.message.length > 200 ? "..." : ""}
-            </p>
-            <p style={{ margin: "8px 0 0 0", fontSize: "12px", color: "#999" }}>
-              {formatDate(metrics.latestMessage.createdAt)}
-            </p>
-          </article>
-        </section>
-      )}
+          {metrics.latestMessage ? (
+            <div className="latest-msg">
+              <p className="latest-msg-meta">
+                <strong>From:</strong> {metrics.latestMessage.name} ({metrics.latestMessage.email})
+              </p>
+              {metrics.latestMessage.subject && (
+                <p className="latest-msg-meta">
+                  <strong>Subject:</strong> {metrics.latestMessage.subject}
+                </p>
+              )}
+              <p className="latest-msg-body">
+                {metrics.latestMessage.message.substring(0, 200)}
+                {metrics.latestMessage.message.length > 200 ? "..." : ""}
+              </p>
+              <p className="latest-msg-time">
+                {formatDate(metrics.latestMessage.createdAt)}
+              </p>
+            </div>
+          ) : (
+            <p className="no-data">No messages yet</p>
+          )}
+        </article>
 
-      {/* Recent Visitors Panel */}
-      {metrics.recentVisitors.length > 0 && (
-        <section className="dashboard-panel">
-          <h2>Recent Visitors</h2>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
-              <thead>
-                <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
-                  <th style={{ padding: "8px", textAlign: "left", fontWeight: 600 }}>Country</th>
-                  <th style={{ padding: "8px", textAlign: "left", fontWeight: 600 }}>City</th>
-                  <th style={{ padding: "8px", textAlign: "left", fontWeight: 600 }}>Visit Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {metrics.recentVisitors.slice(0, 20).map((visitor) => (
-                  <tr key={visitor.id} style={{ borderBottom: "1px solid #f0f0f0" }}>
-                    <td style={{ padding: "8px" }}>{visitor.country}</td>
-                    <td style={{ padding: "8px" }}>{visitor.city}</td>
-                    <td style={{ padding: "8px", color: "#666", fontSize: "12px" }}>
-                      {formatDate(visitor.visitedAt)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
-
-      {/* Recent Messages (interactive) */}
-      <section className="dashboard-panel">
-        <h2>Recent Messages</h2>
-        <RecentMessages initialMessages={metrics.recentMessages} />
+        <article className="dashboard-panel">
+          <h2>Visitor Trend</h2>
+          <TrendChart
+            today={metrics.todayVisitors}
+            week={metrics.weekVisitors}
+            month={metrics.monthVisitors}
+          />
+        </article>
       </section>
 
-      {/* Geography */}
+      {/* Geography Charts */}
       <section className="dashboard-columns">
         <article className="dashboard-panel">
           <h2>Top Countries</h2>
-          {metrics.topCountries.length > 0 ? (
-            <div className="ranking-list">
-              {metrics.topCountries.map((item) => (
-                <div key={item.country} className="ranking-row">
-                  <span>{item.country}</span>
-                  <div>
-                    <span style={{ width: `${(item.count / (metrics.topCountries[0]?.count || 1)) * 100}%` }} />
-                  </div>
-                  <span style={{ marginLeft: "8px", fontSize: "12px", color: "#666" }}>{item.count}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p style={{ color: "#999" }}>No geographic data available</p>
-          )}
+          <BarChart
+            items={metrics.topCountries}
+            labelKey="country"
+            countKey="count"
+          />
         </article>
 
         <article className="dashboard-panel">
           <h2>Top Cities</h2>
-          {metrics.topCities.length > 0 ? (
-            <div className="ranking-list">
-              {metrics.topCities.map((item) => (
-                <div key={item.city} className="ranking-row">
-                  <span>{item.city}</span>
-                  <div>
-                    <span style={{ width: `${(item.count / (metrics.topCities[0]?.count || 1)) * 100}%` }} />
-                  </div>
-                  <span style={{ marginLeft: "8px", fontSize: "12px", color: "#666" }}>{item.count}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p style={{ color: "#999" }}>No city data available</p>
-          )}
+          <BarChart
+            items={metrics.topCities}
+            labelKey="city"
+            countKey="count"
+          />
         </article>
       </section>
 
-      {/* Recent Activity Feed */}
+      {/* Recent Messages */}
       <section className="dashboard-panel">
-        <h2>Recent Activity</h2>
-        {metrics.recentActivity.length > 0 ? (
-          <ul className="event-list" style={{ listStyle: "none", padding: "0", margin: "0" }}>
-            {metrics.recentActivity.map((event) => (
-              <ActivityFeedItem key={event.id} event={event} />
-            ))}
-          </ul>
-        ) : (
-          <p style={{ color: "#999" }}>No recent activity</p>
-        )}
+        <h2>Recent Messages</h2>
+        <RecentMessages initialMessages={metrics.recentMessages} />
       </section>
-
-      {/* Recent Questions */}
-      {metrics.recentInteractions.length > 0 && (
-        <section className="dashboard-panel">
-          <h2>Recent AI Questions</h2>
-          <ul className="event-list">
-            {metrics.recentInteractions.map((item, idx) => (
-              <li key={idx}>
-                <strong>Q:</strong> {item.question}
-                <p style={{ fontSize: "12px", color: "#999", margin: "4px 0 0 0" }}>
-                  {formatDate(item.timestamp)}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
     </main>
   );
 }

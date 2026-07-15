@@ -65,120 +65,57 @@ export default function RecentMessages({ initialMessages }: { initialMessages: M
 
   if (messages.length === 0) {
     return (
-      <div style={{ textAlign: "center", padding: "32px", color: "#999" }}>
+      <div className="msg-empty">
         <p>No messages yet</p>
       </div>
     );
   }
 
   return (
-    <div>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        {messages.map((m) => (
-          <li
-            key={m.id}
-            style={{
-              marginBottom: 12,
-              padding: 12,
-              border: "1px solid #eee",
-              borderRadius: 6,
-              backgroundColor: m.is_read ? "#ffffff" : "#fffbf0"
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                marginBottom: 8
-              }}
-            >
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginBottom: "4px"
-                  }}
-                >
-                  <strong>{m.name}</strong>
-                  {!m.is_read && (
-                    <span
-                      style={{
-                        display: "inline-block",
-                        width: "8px",
-                        height: "8px",
-                        backgroundColor: "#d4af37",
-                        borderRadius: "50%"
-                      }}
-                      title="Unread"
-                    />
-                  )}
-                </div>
-                <div style={{ fontSize: 12, color: "#666" }}>
-                  {m.email}
-                </div>
-                <div style={{ fontSize: 12, color: "#999", marginTop: "2px" }}>
-                  {m.subject || "(No Subject)"}
-                </div>
+    <div className="msg-list">
+      {messages.map((m) => (
+        <article
+          key={m.id}
+          className={`msg-card${m.is_read ? "" : " unread"}`}
+        >
+          <div className="msg-header">
+            <div>
+              <div className="msg-sender">
+                <span>{m.name}</span>
+                {!m.is_read && <span className="msg-dot" title="Unread" />}
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "8px",
-                  marginLeft: "12px"
-                }}
+              <div className="msg-email">{m.email}</div>
+              <div className="msg-subject">{m.subject || "(No Subject)"}</div>
+            </div>
+            <div className="msg-actions">
+              <button
+                onClick={() => toggleRead(m.id, m.is_read)}
+                disabled={loading === m.id}
+                title={m.is_read ? "Mark as unread" : "Mark as read"}
               >
-                <button
-                  onClick={() => toggleRead(m.id, m.is_read)}
-                  disabled={loading === m.id}
-                  style={{
-                    padding: "4px 8px",
-                    fontSize: "12px",
-                    cursor: loading === m.id ? "default" : "pointer",
-                    opacity: loading === m.id ? 0.6 : 1
-                  }}
-                  title={m.is_read ? "Mark as unread" : "Mark as read"}
-                >
-                  {m.is_read ? "Unread" : "Read"}
-                </button>
-                <button
-                  onClick={() => deleteMessage(m.id)}
-                  disabled={loading === m.id}
-                  style={{
-                    padding: "4px 8px",
-                    fontSize: "12px",
-                    cursor: loading === m.id ? "default" : "pointer",
-                    opacity: loading === m.id ? 0.6 : 1,
-                    color: "#d32f2f"
-                  }}
-                  title="Delete message"
-                >
-                  Delete
-                </button>
-              </div>
+                {m.is_read ? "Unread" : "Read"}
+              </button>
+              <button
+                className="msg-delete"
+                onClick={() => deleteMessage(m.id)}
+                disabled={loading === m.id}
+                title="Delete message"
+              >
+                Delete
+              </button>
             </div>
+          </div>
 
-            <p
-              style={{
-                margin: "8px 0",
-                whiteSpace: "pre-wrap",
-                fontSize: "14px",
-                color: "#555",
-                lineHeight: 1.5
-              }}
-            >
-              {m.message.substring(0, 300)}
-              {m.message.length > 300 ? "..." : ""}
-            </p>
+          <p className="msg-body">
+            {m.message.substring(0, 300)}
+            {m.message.length > 300 ? "..." : ""}
+          </p>
 
-            <div style={{ fontSize: 12, color: "#999", marginTop: 8 }}>
-              {new Date(m.createdAt).toLocaleString()}
-            </div>
-          </li>
-        ))}
-      </ul>
+          <div className="msg-time">
+            {new Date(m.createdAt).toLocaleString()}
+          </div>
+        </article>
+      ))}
     </div>
   );
 }
