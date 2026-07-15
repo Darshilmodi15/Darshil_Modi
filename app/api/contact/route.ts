@@ -51,8 +51,11 @@ async function sendEmail(to: string, subject: string, html: string): Promise<boo
   }
 }
 
-async function sendAdminNotification(name: string, email: string, subject: string, message: string): Promise<void> {
-  if (!ADMIN_EMAIL) return;
+async function sendAdminNotification(name: string, email: string, subject: string, message: string): Promise<boolean> {
+  if (!ADMIN_EMAIL) {
+    console.error("ADMIN_EMAIL is not configured");
+    return false;
+  }
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; color: #202020;">
@@ -64,10 +67,10 @@ async function sendAdminNotification(name: string, email: string, subject: strin
       <p style="white-space: pre-wrap;">${escapeHtml(message)}</p>
     </div>`;
 
-  await sendEmail(ADMIN_EMAIL, `Portfolio contact: ${subject || "(No subject)"}`, html);
+  return sendEmail(ADMIN_EMAIL, `Portfolio contact: ${subject || "(No subject)"}`, html);
 }
 
-async function sendAutoReply(name: string, email: string): Promise<void> {
+async function sendAutoReply(name: string, email: string): Promise<boolean> {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; color: #202020;">
       <h2>Thanks for reaching out, ${escapeHtml(name)}.</h2>
@@ -75,7 +78,7 @@ async function sendAutoReply(name: string, email: string): Promise<void> {
       <p>- ${escapeHtml(ADMIN_NAME)}</p>
     </div>`;
 
-  await sendEmail(email, "Thanks for contacting Darshil Modi", html);
+  return sendEmail(email, "Thanks for contacting Darshil Modi", html);
 }
 
 export async function POST(request: Request) {
@@ -113,27 +116,38 @@ export async function POST(request: Request) {
   }
 
   const supabase = getSupabaseAdminClient();
-  if (!supabase) {
-    return NextResponse.json({ ok: false, error: "Contact storage is not configured." }, { status: 500 });
+  let stored = false;
+
+  if (supabase) {
+    const { error: dbError } = await supabase.from("contact_messages").insert({
+      name,
+      email,
+      subject,
+      message,
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+
+    if (dbError) {
+      console.error("Contact database error:", dbError);
+    } else {
+      stored = true;
+    }
+  } else {
+    console.error("Supabase is not configured. Contact message will only be emailed.");
   }
 
-  const { error: dbError } = await supabase.from("contact_messages").insert({
-    name,
-    email,
-    subject,
-    message,
-    is_read: false,
-    created_at: new Date().toISOString()
-  });
+  const [adminEmailSent, autoReplySent] = await Promise.all([
+    sendAdminNotification(name, email, subject, message),
+    sendAutoReply(name, email)
+  ]);
 
-  if (dbError) {
-    console.error("Database error:", dbError);
-    return NextResponse.json({ ok: false, error: "Failed to save message." }, { status: 500 });
+  if (!stored && !adminEmailSent) {
+    return NextResponse.json(
+      { ok: false, error: "Message could not be saved or emailed. Please contact me directly by email or LinkedIn." },
+      { status: 500 }
+    );
   }
 
-  Promise.all([sendAdminNotification(name, email, subject, message), sendAutoReply(name, email)]).catch((error) => {
-    console.error("Error sending emails:", error);
-  });
-
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, stored, adminEmailSent, autoReplySent });
 }
