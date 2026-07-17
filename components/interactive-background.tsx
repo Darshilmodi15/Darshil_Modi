@@ -26,16 +26,10 @@ export function InteractiveBackground() {
       });
     };
 
-    const onVisibility = () => {
-      element.style.animationPlayState = document.hidden ? "paused" : "running";
-    };
-
     window.addEventListener("pointermove", onMove, { passive: true });
-    document.addEventListener("visibilitychange", onVisibility);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onMove);
-      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 

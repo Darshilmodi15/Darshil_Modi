@@ -17,8 +17,11 @@ import { useEffect } from "react";
  */
 export function VisitorTracker() {
   useEffect(() => {
-    // Track visitor on component mount
-    trackVisitor();
+    // Track visitor after page has loaded and settled down to optimize initial paint
+    const timer = setTimeout(() => {
+      trackVisitor();
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   async function trackVisitor() {

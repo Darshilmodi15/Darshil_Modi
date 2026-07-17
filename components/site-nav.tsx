@@ -14,7 +14,7 @@ export function SiteNav() {
   return (
     <header className="site-header">
       <Link className="brand" href="/" aria-label={`${personalInfo.name} home`} onClick={() => setOpen(false)}>
-        <Image src="/logo.png" alt="" width={40} height={40} priority className="brand-logo" />
+        <Image src="/logo-nav.png" alt="" width={40} height={40} priority className="brand-logo" />
         <span>
           <strong>Darshil Modi</strong>
           <small>AI/ML + Software</small>

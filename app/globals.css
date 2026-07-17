@@ -80,10 +80,9 @@ img { max-width: 100%; }
     radial-gradient(circle at 18% 82%, color-mix(in srgb, var(--text-primary) 6%, transparent), transparent 24rem);
   opacity: .72;
   transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-  animation: ambient-shift 18s ease-in-out infinite alternate;
+  will-change: transform;
 }
-@keyframes ambient-shift { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(-8deg); } }
-.scroll-progress { position: fixed; top: 0; left: 0; z-index: 100; width: 100%; height: 3px; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+.scroll-progress { position: fixed; top: 0; left: 0; z-index: 100; width: 100%; height: 3px; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); will-change: transform; }
 
 .container { width: min(var(--container), calc(100% - 40px)); margin-inline: auto; }
 main { padding-top: 36px; }
