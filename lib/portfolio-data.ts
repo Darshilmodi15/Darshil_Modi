@@ -106,7 +106,7 @@ export const personalInfo = {
   currentFocus: "AI/ML, multi-agent systems, LLM applications, backend systems, and full-stack products",
   tagline: "I enjoy turning ambitious ideas into working products through AI, backend engineering, and thoughtful interfaces.",
   achievementLine: "SIH 25 Final-Round Selection. Tic Tech Toe 26 Finalist",
-  currentStatus: "Software Engineer Intern at The Gap - AI Driven Research / Google Student Ambassador",
+  currentStatus: "AI Trainer - Business Expert at Handshake AI Fellowship / Software Engineer Intern at The Gap - AI Driven Research / Google Student Ambassador",
   email: "darshilmodi99@gmail.com",
   discord: "darshil1501",
   intro:
@@ -140,7 +140,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "handshake-ai-fellowship",
     organization: "Handshake AI Fellowship",
-    role: "AI Trainer -- Business Expert",
+    role: "AI Trainer - Business Expert",
     period: "July 17, 2026 - Present",
     location: "Remote",
     type: "Fellowship",
