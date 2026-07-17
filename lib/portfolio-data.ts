@@ -138,6 +138,23 @@ export const navigation = [
 
 export const experience: ExperienceEntry[] = [
   {
+    id: "handshake-ai-fellowship",
+    organization: "Handshake AI Fellowship",
+    role: "AI Trainer -- Business Expert",
+    period: "July 17, 2026 - Present",
+    location: "Remote",
+    type: "Fellowship",
+    status: "Current",
+    summary:
+      "Developing and evaluating domain-specific prompts to assess large language model performance in business-related contexts.",
+    bullets: [
+      "Developed and evaluated domain-specific prompts to assess the performance of large language models (LLMs) in business-related contexts.",
+      "Analyzed LLM outputs for accuracy, clarity, and depth in business subfields.",
+      "Contributed to improving AI understanding of complex business topics through expert review and feedback.",
+      "Conducted independent research to support prompt development and evaluation tasks."
+    ]
+  },
+  {
     id: "the-gap-ai-driven-research",
     organization: "The Gap - AI Driven Research",
     role: "Software Engineer Intern",
