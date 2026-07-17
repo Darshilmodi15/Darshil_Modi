@@ -1,8 +1,8 @@
-# 🌌 Mission Log
+# 🚀 Darshil Modi Portfolio & Mission Control Dashboard
 
-> A space-observatory themed portfolio and real-time analytics command center for **Darshil Modi**.
+> A premium personal portfolio and real-time analytics dashboard for **Darshil Modi**.
 
-`Mission Log` is a premium, highly interactive portfolio site styled as an astronomical/observatory command console. Powered by **Next.js 15**, **Supabase**, **Resend**, and **Three.js / React Three Fiber / GSAP**, it tracks live visitor metrics, processes messages, monitors AI assistant interactions, and showcases projects via a command-center interface.
+This project is a modern developer portfolio displaying projects, experience, and achievements, with a private admin dashboard ("Mission Control") located at `/mission-control`. Powered by **Next.js 16**, **Supabase**, **Resend**, and **TailwindCSS**, it tracks live visitor traffic, provides geographic insights, receives instant contact notifications, and lets you manage form submissions in real time.
 
 ---
 
@@ -39,7 +39,7 @@ This project is built using a modern, performant, and highly visual tech stack:
 
 ## 🚀 Local Development Setup
 
-Follow these steps to deploy your local Space Observatory:
+Follow these steps to set up the project locally:
 
 ### 1. Install Dependencies
 
@@ -100,9 +100,9 @@ For the custom portrait frames to display correctly in the Hero section:
 1. Save your portrait image file.
 2. Place it in the public assets folder at: `public/darshil-photo.jpg`.
 
-*(If the file is absent, the UI will fall back to an elegant vector constellation/wireframe placeholder).*
+*(If the file is absent, the UI will fall back to an elegant profile placeholder).*
 
-### 5. Launch the Observatory
+### 5. Launch the Application
 
 Run the development server locally:
 
