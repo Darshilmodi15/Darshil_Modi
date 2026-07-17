@@ -607,3 +607,40 @@ ul { padding-left: 1.1rem; color: var(--text-secondary); line-height: 1.7; }
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
   .bar-row { grid-template-columns: minmax(70px, 110px) 1fr auto; }
 }
+
+/* Experience and Program Logos */
+.experience-header, .program-header {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1.1rem;
+}
+.company-logo-wrapper, .program-logo-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.program-logo-wrapper {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  padding: 3px;
+}
+.company-logo, .program-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.program-logo {
+  border-radius: 6px;
+}

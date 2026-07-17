@@ -15,6 +15,7 @@ export type ExperienceEntry = {
   summary: string;
   bullets: string[];
   link?: string;
+  logo?: string;
 };
 
 export type ProgramEntry = {
@@ -24,6 +25,7 @@ export type ProgramEntry = {
   period: string;
   summary: string;
   status: "Current" | "Completed";
+  logo?: string;
 };
 
 export type ProjectStatus =
@@ -145,6 +147,7 @@ export const experience: ExperienceEntry[] = [
     location: "Remote",
     type: "Fellowship",
     status: "Current",
+    logo: "/logo-handshake.jpg",
     summary:
       "Developing and evaluating domain-specific prompts to assess large language model performance in business-related contexts.",
     bullets: [
@@ -162,6 +165,7 @@ export const experience: ExperienceEntry[] = [
     location: "Remote / India",
     type: "Internship",
     status: "Current",
+    logo: "/logo-thegap.png",
     summary:
       "Selected among 10 Software Engineering Interns from 250+ applicants for The Gap, an AI-driven research platform. Currently completing onboarding before beginning cross-functional product engineering work.",
     bullets: [
@@ -178,6 +182,7 @@ export const experience: ExperienceEntry[] = [
     period: "June 2026 - July 2026",
     type: "Internship",
     status: "Completed",
+    logo: "/logo-enginow.png",
     summary:
       "Independently designed, developed, and deployed Eat the Frog as the official project for my Full Stack Developer Internship at Enginow.",
     bullets: [
@@ -196,6 +201,7 @@ export const programs: ProgramEntry[] = [
     organization: "Google Student Ambassadors (India)",
     period: "June 2026 - Present",
     status: "Current",
+    logo: "/logo-gsa.jpg",
     summary:
       "Selected for the 12-month Google Student Ambassadors India program, focused on student engagement, technology awareness, community participation, and campus initiatives."
   }
