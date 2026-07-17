@@ -35,13 +35,9 @@ export type DashboardMetrics = {
   totalMessages: number;
   unreadMessages: number;
   latestMessage?: ContactMessage;
-  totalInteractions: number;
-  recentInteractions: { question: string; timestamp: string }[];
   recentMessages: ContactMessage[];
-  recentVisitors: RecentVisitor[];
   topCountries: { country: string; count: number }[];
   topCities: { city: string; count: number }[];
-  recentActivity: ActivityEvent[];
 };
 
 export function getSupabaseAdminClient() {
@@ -151,13 +147,9 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
       countriesReached: 0,
       totalMessages: 0,
       unreadMessages: 0,
-      totalInteractions: 0,
-      recentInteractions: [],
       recentMessages: [],
-      recentVisitors: [],
       topCountries: [],
-      topCities: [],
-      recentActivity: []
+      topCities: []
     };
   }
 
@@ -173,8 +165,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
     weekVisitors,
     monthVisitors,
     totalMessages,
-    unreadMessages,
-    totalInteractions
+    unreadMessages
   ] = await Promise.all([
     countRows(supabase, "visitors"),
     countRows(supabase, "visitors", [
@@ -189,33 +180,21 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
     countRows(supabase, "contact_messages"),
     countRows(supabase, "contact_messages", [
       { column: "is_read", operator: "eq", value: false }
-    ]),
-    countRows(supabase, "assistant_interactions")
+    ])
   ]);
 
   // Batch 2: Fetch detailed data for analytics
-  const [latestMessageRes, recentQuestionsRes, recentVisitorsRes, allVisitorsRes] =
-    await Promise.all([
-      supabase
-        .from("contact_messages")
-        .select("id, name, email, subject, message, is_read, created_at")
-        .order("created_at", { ascending: false })
-        .limit(1),
-      supabase
-        .from("assistant_interactions")
-        .select("question, created_at")
-        .order("created_at", { ascending: false })
-        .limit(20),
-      supabase
-        .from("visitors")
-        .select("id, country, city, created_at")
-        .order("created_at", { ascending: false })
-        .limit(20),
-      supabase
-        .from("visitors")
-        .select("country, city, created_at")
-        .order("created_at", { ascending: false })
-    ]);
+  const [latestMessageRes, allVisitorsRes] = await Promise.all([
+    supabase
+      .from("contact_messages")
+      .select("id, name, email, subject, message, is_read, created_at")
+      .order("created_at", { ascending: false })
+      .limit(1),
+    supabase
+      .from("visitors")
+      .select("country, city, created_at")
+      .order("created_at", { ascending: false })
+  ]);
 
   // Batch 3: Fetch recent messages and count unique countries
   const [recentMessagesRes, uniqueCountriesRes] = await Promise.all([
@@ -242,22 +221,6 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
         createdAt: latestMessageRes.data[0].created_at
       }
     : undefined;
-
-  // Process recent interactions
-  const recentInteractions = (recentQuestionsRes.data ?? []).map((item: any) => ({
-    question: item.question,
-    timestamp: item.created_at
-  }));
-
-  // Process recent visitors
-  const recentVisitors: RecentVisitor[] = (recentVisitorsRes.data ?? []).map(
-    (visitor: any, idx: number) => ({
-      id: `visitor-${idx}`,
-      country: visitor.country || "Unknown",
-      city: visitor.city || "Unknown",
-      visitedAt: visitor.created_at
-    })
-  );
 
   // Process recent messages
   const recentMessages: ContactMessage[] = (recentMessagesRes.data ?? []).map(
@@ -308,34 +271,6 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
       .filter((val: any) => val)
   ).size;
 
-  // Build recent activity feed
-  const recentActivity: ActivityEvent[] = [
-    ...(recentVisitorsRes.data ?? []).slice(0, 5).map((visitor: any, idx: number) => ({
-      id: `visitor-${idx}`,
-      type: "visitor" as const,
-      title: `Visitor from ${visitor.city || visitor.country || "Unknown"}`,
-      detail: `${visitor.country || ""} ${visitor.city || ""}`.trim(),
-      timestamp: visitor.created_at
-    })),
-    ...(latestMessageRes.data ?? []).slice(0, 2).map((msg: any, idx: number) => ({
-      id: `contact-${idx}`,
-      type: "contact" as const,
-      title: `Contact from ${msg.name}`,
-      detail: msg.subject || msg.message.substring(0, 50),
-      timestamp: msg.created_at
-    })),
-    ...(recentQuestionsRes.data ?? []).slice(0, 3).map((qa: any, idx: number) => ({
-      id: `question-${idx}`,
-      type: "question" as const,
-      title: `Question: ${qa.question.substring(0, 40)}...`,
-      detail: qa.question,
-      timestamp: qa.created_at
-    }))
-  ].sort(
-    (a, b) =>
-      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  );
-
   return {
     totalVisitors,
     todayVisitors,
@@ -345,12 +280,8 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
     totalMessages,
     unreadMessages,
     latestMessage,
-    totalInteractions,
-    recentInteractions,
     recentMessages,
-    recentVisitors,
     topCountries,
-    topCities,
-    recentActivity
+    topCities
   };
 }

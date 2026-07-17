@@ -22,8 +22,7 @@ This project is built using a modern, performant, and highly visual tech stack:
 ## 🛰️ Key Features
 
 ### 📈 Real-Time Command Center
-*   **Live Dashboard Metrics:** Displays total all-time visitors, today's visits, weekly/monthly growth curves, and message counts.
-*   **Activity Feed:** A streaming telemetry log of recent visits, contact submissions, and AI conversations.
+*   **Live Dashboard Metrics:** Displays total all-time visitors, today's visits, and message counts.
 *   **Geographic Insights:** Interactive breakdowns of top visitor locations by country and city.
 
 ### ✉️ Intelligent Message Management
@@ -79,7 +78,7 @@ ADMIN_NAME="Darshil Modi"
 
 ### 3. Initialize the Database
 
-The dashboard requires three core tables. Run the migration script against your Supabase project.
+The dashboard requires two core tables. Run the migration script against your Supabase project.
 
 #### Using the Supabase CLI:
 ```bash
@@ -92,7 +91,6 @@ Copy the contents of [supabase/schema.sql](supabase/schema.sql) and paste them d
 This script sets up:
 *   `visitors`: Country, city, and anonymized hash tracking.
 *   `contact_messages`: Standard contact details with read/unread flags.
-*   `assistant_interactions`: AI conversation queries.
 *   Performance-optimized query indexes (`idx_visitors_created_at`, `idx_visitors_country`, etc.).
 *   Row-Level Security (RLS) policies.
 

@@ -24,12 +24,6 @@ create table if not exists contact_messages (
   created_at timestamptz not null default now()
 );
 
--- Assistant interactions table: Tracks AI interaction questions
-create table if not exists assistant_interactions (
-  id uuid primary key default gen_random_uuid(),
-  question text not null,
-  created_at timestamptz not null default now()
-);
 
 -- Comprehensive indexes for performance and analytics
 create index if not exists idx_visitors_created_at on visitors (created_at desc);
@@ -42,13 +36,11 @@ create index if not exists idx_contact_messages_created_at on contact_messages (
 create index if not exists idx_contact_messages_is_read on contact_messages (is_read);
 create index if not exists idx_contact_messages_read_created on contact_messages (is_read, created_at desc);
 
-create index if not exists idx_assistant_interactions_created_at on assistant_interactions (created_at desc);
 
 -- Row-level security (optional but recommended)
 -- Enable RLS on all tables
 alter table visitors enable row level security;
 alter table contact_messages enable row level security;
-alter table assistant_interactions enable row level security;
 
 -- Allow admin-only access via service role (implicit)
 -- Regular authenticated users have no direct access
