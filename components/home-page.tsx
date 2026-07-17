@@ -76,11 +76,29 @@ export function HomePage() {
         <div className="panel compact-list">
           <p className="eyebrow">Experience preview</p>
           <h2>Current and recent roles.</h2>
-          {[...experience.map((item) => ({ id: item.id, period: item.period, title: item.role, organization: item.organization })), ...programs.map((item) => ({ id: item.id, period: item.period, title: item.title, organization: item.organization }))].slice(0, 3).map((item) => (
+          {[
+            ...experience.map((item) => ({ id: item.id, period: item.period, title: item.role, organization: item.organization, logo: item.logo })),
+            ...programs.map((item) => ({ id: item.id, period: item.period, title: item.title, organization: item.organization, logo: item.logo }))
+          ].slice(0, 3).map((item) => (
             <div className="list-row" key={item.id}>
               <span>{item.period}</span>
-              <strong>{item.title}</strong>
-              <p>{item.organization}</p>
+              <div className="list-row-content">
+                {item.logo && (
+                  <div className="list-row-logo-wrapper">
+                    <Image
+                      src={item.logo}
+                      alt={`${item.organization} logo`}
+                      width={36}
+                      height={36}
+                      className="list-row-logo"
+                    />
+                  </div>
+                )}
+                <div>
+                  <strong>{item.title}</strong>
+                  <p>{item.organization}</p>
+                </div>
+              </div>
             </div>
           ))}
           <Link className="text-link" href="/experience">View full experience</Link>

@@ -191,7 +191,7 @@ ul { padding-left: 1.1rem; color: var(--text-secondary); line-height: 1.7; }
 .achievement-strip article, .skill-card { padding: 1rem; border-top: 1px solid var(--border); }
 .achievement-strip span { color: var(--accent); font-weight: 800; }
 .compact-list h2 { font-size: clamp(1.45rem, 2.5vw, 2rem); }
-.compact-list .list-row { display: grid; grid-template-columns: minmax(150px, 190px) 1fr; gap: 1.3rem; padding: 1rem 0; border-top: 1px solid var(--border); }
+.compact-list .list-row { display: grid; grid-template-columns: minmax(150px, 190px) 1fr; gap: 1.3rem; padding: 1rem 0; border-top: 1px solid var(--border); align-items: center; }
 .list-row span, .muted { color: var(--text-secondary); }
 .list-row strong { display: block; }
 
@@ -642,5 +642,32 @@ ul { padding-left: 1.1rem; color: var(--text-secondary); line-height: 1.7; }
   border-radius: 8px;
 }
 .program-logo {
+  border-radius: 6px;
+}
+
+/* Dashboard list preview logos */
+.list-row-content {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+}
+.list-row-logo-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  padding: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.list-row-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   border-radius: 6px;
 }
